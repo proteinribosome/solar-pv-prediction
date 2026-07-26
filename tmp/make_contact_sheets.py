@@ -1,7 +1,8 @@
 from pathlib import Path
+import sys
 from PIL import Image, ImageDraw, ImageFont
 
-src = Path("tmp/rendered_paper")
+src = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("tmp/rendered_paper")
 out = src / "contact_sheets"
 out.mkdir(exist_ok=True)
 font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", 26)

@@ -488,7 +488,6 @@ def draft_status_page(doc):
         "Run Phase 5 and save phase4_system_results.csv, phase5_system_results.csv, phase5_headline.csv, and the paired bootstrap confidence interval.",
         "Replace every bracketed [TO COMPLETE] marker, especially the confidence interval, number of systems improved by Model B, repository URL, author name, and exact software versions.",
         "Add the system-level Model A versus Model B scatterplot after the paired results are saved; this is needed to show whether the 14.0% aggregate improvement is broad or driven by a subset of systems.",
-        "Complete the planned SMA robustness analysis or clearly state that it was not performed.",
         "Check all citations against the original articles and the program's required APA guidance, obtain formal topic approval, and incorporate mentor, peer, and Writing Center feedback.",
         "Run Turnitin, resolve genuine quotation or attribution problems, and ensure the final paper represents the student's own analysis and writing.",
     ):
@@ -553,7 +552,7 @@ def build_paper(doc, fig1, fig2):
     doc.add_heading("4. Dataset and Data Preparation", level=1)
     doc.add_heading("4.1 Source dataset and analytical subset", level=2)
     add_body(doc, "Lin et al. (2025) released a three-year rooftop PV dataset collected at the Hong Kong University of Science and Technology. The source contains inverter-level generation measurements from 60 grid-connected rooftop stations at five-minute resolution, on-site meteorological measurements at one-minute resolution, and system metadata. The campus is located in Hong Kong's humid subtropical climate. The source paper explicitly notes that the single-location climate may limit the generalizability of models trained on the data.")
-    add_body(doc, "The current project begins from a previously combined site-level table with 2,756,516 rows. Its measurements have been aligned to 15-minute timestamps. The analysis retains 37 SolarEdge systems for which the required power, capacity, and weather fields are available in the combined table. Although the source dataset contains 60 stations, this paper's claims apply only to the 37-system analytical subset. The reasons that the remaining systems are out of scope should be documented in the final version, particularly if the SMA systems are analyzed separately.")
+    add_body(doc, "The current project begins from a previously combined site-level table with 2,756,516 rows. Its measurements have been aligned to 15-minute timestamps. The analysis retains 37 SolarEdge systems for which the required power, capacity, and weather fields are available in the combined table. Although the source dataset contains 60 stations, this paper's claims apply only to the 37-system analytical subset and do not extend to stations outside this cohort.")
     add_table(
         doc,
         ["Quantity", "Value", "Interpretation"],
@@ -698,8 +697,8 @@ def build_paper(doc, fig1, fig2):
     doc.add_heading("6.4 Statistical uncertainty remains pending", level=2)
     add_body(doc, "The observed 14.0% reduction is a point estimate over 37 systems. Without the paired bootstrap interval, the paper cannot determine how precisely that reduction estimates expected performance across similar campus systems. The planned 95% confidence interval is [TO COMPLETE: lower bound, upper bound]. Until that analysis is executed, the evidence supports the descriptive statement that Model B performed better on average in these folds, but not a final inferential claim about the broader population of PV systems.")
 
-    doc.add_heading("6.5 Robustness and interpretation analyses", level=2)
-    add_body(doc, "Two planned analyses are not yet complete. First, the notebook includes a gated hook for evaluating SMA systems as a robustness subset, but the cleaned SMA input has not been prepared. Second, no feature-importance analysis is available to determine whether the hybrid model relies primarily on clear-sky index, solar geometry, or the temperature proxy. These analyses are not required to establish the main feature-ablation result, but they would strengthen the explanation of why Model B improves and whether the effect extends beyond the SolarEdge subset.")
+    doc.add_heading("6.5 Interpretation analysis", level=2)
+    add_body(doc, "No feature-importance analysis is available to determine whether the hybrid model relies primarily on clear-sky index, solar geometry, or the temperature proxy. This analysis is not required to establish the main feature-ablation result, but it would strengthen the explanation of why Model B improves.")
 
     # 7 Discussion
     doc.add_heading("7. Discussion", level=1)
@@ -731,7 +730,7 @@ def build_paper(doc, fig1, fig2):
     # 9 Future work
     doc.add_heading("9. Future Work", level=1)
     add_body(doc, "The first priority is to complete the existing analysis rather than add model complexity. Phase 5 should save the paired system results, calculate the bootstrap interval, report system win counts, and generate the paired scatterplot. The preprocessing and modeling pipeline should then be rerun from a portable dataset path with pinned versions and fixed seeds.")
-    add_body(doc, "A second priority is robustness across hardware and location. The planned SMA subset can test whether the conclusion changes for systems without panel-level optimizers. A stronger external test would train on Hong Kong and evaluate zero-shot performance on a public dataset from a different climate, such as Alice Springs. Such a test would move the claim from cross-system to cross-climate generalization.")
+    add_body(doc, "A second priority is robustness across hardware and location. Future work should repeat the grouped evaluation in an independent hardware population and should test zero-shot performance on a public dataset from a different climate, such as Alice Springs. Such tests would show whether the present within-cohort result extends across equipment and climate domains.")
     add_body(doc, "A third direction is mechanism-focused ablation. Adding physics features in groups would distinguish the contribution of geometry, clear-sky normalization, and temperature. Permutation importance or SHAP analysis could show which features the hybrid uses, but those tools should be interpreted as predictive explanations rather than causal effects.")
     add_body(doc, "Finally, physics-as-features can be compared with physics-guided residual correction. In the latter design, a physical model produces an initial prediction and machine learning models its residual error. Comparing these two hybridization strategies under the same held-out systems would test whether physical structure is more transferable as an input representation or as a baseline model.")
 
@@ -784,7 +783,6 @@ def build_paper(doc, fig1, fig2):
             ("Paired system win count", "Missing", "Run Phase 5 and report"),
             ("Paired bootstrap 95% interval", "Missing", "Run Phase 5 and replace placeholders"),
             ("System-level A-vs-B plot", "Missing", "Generate from saved system results"),
-            ("SMA robustness subset", "Not run", "Complete or state clearly as future work"),
             ("Feature interpretation", "Not run", "Optional grouped ablation or permutation importance"),
             ("Portable data path", "Not complete", "Document retrieval and rebuild process"),
             ("Pinned environment", "Not complete", "Freeze package versions"),
