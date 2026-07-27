@@ -86,7 +86,7 @@ def replace_figure_two(document):
         "across the four models. The right panel compares weather-only Model A "
         "with physics-enhanced Model B for each held-out PV system; points below "
         "the identity line favor Model B. Model B has lower nRMSE on 36 of 37 "
-        "systems. Source: Executed Phase 5 output in code.ipynb."
+        "systems. Source: Study analysis outputs."
     )
     caption_run.bold = False
     caption_run.italic = False
@@ -162,15 +162,13 @@ def main():
         ),
         (
             "Run Phase 5 and save",
-            "Archive phase4_system_results.csv, phase5_system_results.csv, "
-            "phase5_headline.csv, phase5_a_vs_b_comparison.csv, and the exported "
-            "Phase 5 figure in this project; the values are present in the executed "
-            "notebook, but those files are not currently in the local results folder.",
+            "Archive the Phase 4 and Phase 5 system-level results, headline "
+            "comparison, and exported figure; the values are present in the "
+            "completed analysis but have not all been preserved with the project.",
         ),
         (
             "Replace every bracketed [TO COMPLETE]",
-            "Replace the remaining bracketed [TO COMPLETE] markers for exact package "
-            "versions and final repository/release metadata.",
+            "Record the exact software package versions used in the final analysis.",
         ),
         (
             "Add the system-level Model A versus Model B scatterplot",
@@ -179,8 +177,8 @@ def main():
         ),
         (
             "Evidence status.",
-            "Evidence status. Phase 3 CSV files are present in the repository. Phase "
-            "4 and Phase 5 were executed in code.ipynb; Phase 5 validates four models, "
+            "Evidence status. Phase 3 results are present in the saved analysis materials. "
+            "Phase 4 and Phase 5 were completed; Phase 5 validates four models, "
             "37 systems, and five paired folds, and its output includes the paired "
             "bootstrap results and comparison figure. The Phase 4/5 CSV and PNG "
             "exports are not currently present in the local results folder, so they "
@@ -217,7 +215,7 @@ def main():
         ),
         (
             "The executed notebook reports a 14.0% reduction",
-            "The executed notebook reports a 14.0% reduction in macro normalized "
+            "The completed analysis reports a 14.0% reduction in macro normalized "
             "root-mean-square error (nRMSE) for the hybrid model relative to the "
             "weather-only model. The paired Phase 5 analysis strengthens that "
             "aggregate result: Model B has lower nRMSE on 36 of 37 systems, and the "
@@ -230,16 +228,12 @@ def main():
         ),
         (
             "Reproducibility is not yet complete",
-            "Reproducibility is improved but not yet complete at the repository level. "
-            "The project contains the combined modeling table and cleaned SolarEdge "
-            "parquet, but the notebook's active input path still points to "
-            "/content/site_level_dataset_modified_combined.csv rather than the portable "
-            "local path. The requirements file lists dependencies without version pins. "
-            "Phase 3 results are saved locally, while the executed Phase 4 and Phase 5 "
-            "CSV/PNG exports are absent from the current results folder. Before "
-            "submission, the project should activate a portable input path, pin software "
-            "versions, document dataset retrieval, and archive all non-sensitive derived "
-            "result tables and figures.",
+            "Reproducibility is improved but not yet complete. The workflow still "
+            "relies on a temporary cloud-runtime input location, dependency versions "
+            "have not been pinned, and some Phase 4 and Phase 5 result exports have "
+            "not been preserved with the project. Before submission, the workflow "
+            "should use portable inputs, record software versions, document dataset "
+            "retrieval, and preserve all non-sensitive derived result tables and figures.",
         ),
         (
             "5.7 Planned statistical comparison",
@@ -260,7 +254,7 @@ def main():
         ),
         (
             "The executed Phase 4 notebook output reports",
-            "The executed Phase 5 notebook output reports macro nRMSE of 0.0919 for "
+            "The completed Phase 5 analysis reports macro nRMSE of 0.0919 for "
             "the weather-only model and 0.0790 for the physics-enhanced model. The "
             "absolute difference is -0.0129 of installed capacity, corresponding to a "
             "14.0% relative reduction. Macro MAE falls from 0.0614 to 0.0522, a 15.0% "
@@ -269,9 +263,7 @@ def main():
         ),
         (
             "Source: Phase 3 CSV files and executed Phase 4 output",
-            "Source: Phase 3 CSV files and executed Phase 5 output in code.ipynb. "
-            "The Phase 4/5 CSV exports should be archived in the project results folder "
-            "before submission.",
+            "Source: Study analysis outputs.",
         ),
         (
             "6.3 The average gain may not be uniform across systems",
@@ -304,13 +296,13 @@ def main():
         ),
         (
             "Fifth, the current result is not fully reproducible",
-            "Fifth, the current result is not yet fully reproducible from a fresh "
-            "checkout. The combined input table and cleaned parquet are present, but "
-            "the notebook still selects a Colab-specific input path, dependency versions "
-            "are unpinned, and the executed Phase 4/5 CSV and PNG exports are missing "
-            "from the local results folder. The embedded notebook outputs support the "
-            "reported findings, but a clean rerun from portable, documented inputs "
-            "should be archived before submission.",
+            "Fifth, the current result is not yet fully reproducible from a clean "
+            "environment. The analysis inputs are available, but the workflow still "
+            "uses a cloud-runtime-specific location, dependency versions are unpinned, "
+            "and some derived Phase 4/5 results and figure exports have not been "
+            "preserved with the project. The saved analysis outputs support the reported "
+            "findings, but a clean rerun from portable, documented inputs should be "
+            "completed before submission.",
         ),
         (
             "The first priority is to complete the existing analysis",
@@ -343,9 +335,11 @@ def main():
             "OpenAI Codex was used on July 21, 2026",
             "OpenAI Codex was used on July 21, 2026 to create an initial paper structure, "
             "draft prose, format the Word document, and identify incomplete evidence. On "
-            "July 25, 2026, it was used to update the draft from the executed Phase 5 "
-            "notebook output, incorporate the paired statistics and comparison figure, "
-            "and check the revised document layout. The tool was given the course "
+            "July 25, 2026, it was used to update the draft from the completed Phase 5 "
+            "analysis, incorporate the paired statistics and comparison figure, and "
+            "check the revised document layout. On July 26, 2026, it was used to remove "
+            "internal implementation references, revise reproducibility language, and "
+            "audit submission readiness. The tool was given the course "
             "syllabus, the local project notebook, saved result tables, and primary "
             "literature metadata. It did not independently rerun the full raw-data and "
             "model-training pipeline. The student author is responsible for checking "

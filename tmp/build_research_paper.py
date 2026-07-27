@@ -483,16 +483,16 @@ def draft_status_page(doc):
     spacer.paragraph_format.space_before = Pt(0)
     spacer.paragraph_format.space_after = Pt(8)
     spacer.paragraph_format.line_spacing = 1.0
-    add_body(doc, "The following items are intentionally unfinished because the available repository does not yet contain the saved Phase 4 and Phase 5 system-level result files needed to verify them:")
+    add_body(doc, "The following items are intentionally unfinished because the available project files do not yet contain the saved Phase 4 and Phase 5 system-level result files needed to verify them:")
     for item in (
-        "Run Phase 5 and save phase4_system_results.csv, phase5_system_results.csv, phase5_headline.csv, and the paired bootstrap confidence interval.",
-        "Replace every bracketed [TO COMPLETE] marker, especially the confidence interval, number of systems improved by Model B, repository URL, author name, and exact software versions.",
+        "Run Phase 5 and preserve the system-level results, headline comparison, and paired bootstrap confidence interval.",
+        "Record the exact software package versions used in the final analysis.",
         "Add the system-level Model A versus Model B scatterplot after the paired results are saved; this is needed to show whether the 14.0% aggregate improvement is broad or driven by a subset of systems.",
         "Check all citations against the original articles and the program's required APA guidance, obtain formal topic approval, and incorporate mentor, peer, and Writing Center feedback.",
         "Run Turnitin, resolve genuine quotation or attribution problems, and ensure the final paper represents the student's own analysis and writing.",
     ):
         add_bullet(doc, item)
-    add_body(doc, "Evidence status. Phase 3 values are available as CSV files in the repository. Phase 4 values are present as executed notebook outputs but are not currently saved as separate CSV files. Phase 5, including the paired bootstrap interval, has code but no executed output in the notebook. For this reason, the aggregate Phase 4 values are described as provisional throughout the draft.", bold_lead="Evidence status.")
+    add_body(doc, "Evidence status. Phase 3 values are available in the saved analysis materials. Phase 4 values are present in the executed analysis but are not currently saved as separate result tables. Phase 5, including the paired bootstrap interval, has not yet been executed. For this reason, the aggregate Phase 4 values are described as provisional throughout the draft.", bold_lead="Evidence status.")
     doc.add_page_break()
 
 
@@ -500,7 +500,7 @@ def build_paper(doc, fig1, fig2):
     # Abstract
     doc.add_heading("Abstract", level=1)
     abstract = (
-        "Data-driven photovoltaic (PV) power models often achieve low error when their training and test sets contain observations from the same installation, but this evaluation does not answer a practical cold-start question: can one model predict the output of a PV system whose historical power data were never used in training? This study investigates whether physically derived, system-independent features improve such cross-system generalization. The analysis uses the open HKUST rooftop PV dataset, which contains three years of power and meteorological measurements from 60 campus installations. After restricting the analysis to 37 SolarEdge systems, localizing timestamps, filtering nighttime observations, constructing physics features, and applying quality-control rules, 1,370,191 modeling-ready observations remained. Four predictors were compared under five-fold grouped cross-validation in which entire PV systems, rather than individual timestamps, were held out: a training-mean baseline, a calibrated global-horizontal-irradiance baseline, weather-only XGBoost, and an otherwise identical XGBoost model augmented with solar zenith, solar azimuth, clear-sky irradiance, clear-sky index, and estimated cell temperature. The executed notebook reports macro normalized root-mean-square errors of 0.2160, 0.1237, 0.0919, and 0.0790, respectively. Thus, the physics-enhanced model reduced macro normalized error by 14.0% and mean absolute error by 15.0% relative to the weather-only model. However, the hybrid model also showed a larger cross-system standard deviation and a slightly worse maximum system error. The results provide preliminary evidence that compact physics-derived features improve average transfer to unseen systems within one campus, while also showing that aggregate gains do not guarantee uniform improvement. A paired confidence interval and cross-climate validation remain necessary before the conclusion can be treated as final."
+        "Data-driven photovoltaic (PV) power models often achieve low error when their training and test sets contain observations from the same installation, but this evaluation does not answer a practical cold-start question: can one model predict the output of a PV system whose historical power data were never used in training? This study investigates whether physically derived, system-independent features improve such cross-system generalization. The analysis uses the open HKUST rooftop PV dataset, which contains three years of power and meteorological measurements from 60 campus installations. After restricting the analysis to 37 SolarEdge systems, localizing timestamps, filtering nighttime observations, constructing physics features, and applying quality-control rules, 1,370,191 modeling-ready observations remained. Four predictors were compared under five-fold grouped cross-validation in which entire PV systems, rather than individual timestamps, were held out: a training-mean baseline, a calibrated global-horizontal-irradiance baseline, weather-only XGBoost, and an otherwise identical XGBoost model augmented with solar zenith, solar azimuth, clear-sky irradiance, clear-sky index, and estimated cell temperature. The completed analysis reports macro normalized root-mean-square errors of 0.2160, 0.1237, 0.0919, and 0.0790, respectively. Thus, the physics-enhanced model reduced macro normalized error by 14.0% and mean absolute error by 15.0% relative to the weather-only model. However, the hybrid model also showed a larger cross-system standard deviation and a slightly worse maximum system error. The results provide preliminary evidence that compact physics-derived features improve average transfer to unseen systems within one campus, while also showing that aggregate gains do not guarantee uniform improvement. A paired confidence interval and cross-climate validation remain necessary before the conclusion can be treated as final."
     )
     add_body(doc, abstract)
     p = doc.add_paragraph()
@@ -517,7 +517,7 @@ def build_paper(doc, fig1, fig2):
     add_body(doc, "Physical knowledge offers one plausible route to improved transfer. Measured global horizontal irradiance (GHI) captures current sunlight, but the same GHI value can occur under different solar positions and clear-sky expectations. Solar zenith and azimuth encode geometry; clear-sky GHI provides a time- and location-specific atmospheric reference; the clear-sky index expresses observed irradiance relative to that reference; and an estimated cell temperature represents the thermal conditions that influence PV conversion efficiency. These variables are derived from relationships that apply across systems and therefore may help a model rely less on installation-specific statistical patterns.")
     add_body(doc, "This paper evaluates that hypothesis using a controlled feature-ablation experiment. Two XGBoost regressors use the same target, grouped folds, algorithm, hyperparameters, and random seed. Model A receives four measured weather variables. Model B receives the same four variables plus five physics-derived features. Because the only planned treatment difference is the feature set, the error difference between the two models estimates the predictive value of those physics features under the chosen evaluation protocol. XGBoost is appropriate for this comparison because tree boosting captures nonlinear interactions in tabular data and has demonstrated strong performance in large PV fleets (Chen & Guestrin, 2016; Grzebyk et al., 2023).")
     add_body(doc, "The study makes three contributions. First, it implements a leakage-resistant evaluation in which all observations from a test system are excluded from training. Second, it compares physics-only, data-driven, and hybrid approaches on identical held-out systems. Third, it reports system-level macro metrics so that installations with more observations do not dominate the headline result. The intended contribution is deliberately narrower than proposing a new neural architecture: it asks whether a small, interpretable physics feature set adds measurable value to a standard tabular learner.")
-    add_body(doc, "The executed notebook reports a 14.0% reduction in macro normalized root-mean-square error (nRMSE) for the hybrid model relative to the weather-only model. That result is promising but not yet sufficient on its own. The system-level Phase 4 results must be saved and the paired uncertainty analysis must be executed before final submission. Moreover, all systems share one campus, climate, and weather station, so the experiment evaluates cross-system generalization rather than cross-climate generalization. The paper therefore treats the current result as evidence within a bounded empirical setting, not as proof that the model will transfer to arbitrary locations.")
+    add_body(doc, "The completed analysis reports a 14.0% reduction in macro normalized root-mean-square error (nRMSE) for the hybrid model relative to the weather-only model. That result is promising but not yet sufficient on its own. The system-level Phase 4 results must be saved and the paired uncertainty analysis must be executed before final submission. Moreover, all systems share one campus, climate, and weather station, so the experiment evaluates cross-system generalization rather than cross-climate generalization. The paper therefore treats the current result as evidence within a bounded empirical setting, not as proof that the model will transfer to arbitrary locations.")
 
     # 2 Problem definition
     doc.add_heading("2. Problem Definition and Hypotheses", level=1)
@@ -568,12 +568,12 @@ def build_paper(doc, fig1, fig2):
         [2700, 1700, 4960],
         numeric_cols=(1,),
         caption="Table 1. Dataset scope after preprocessing",
-        source="Source: Executed outputs in code.ipynb; source-dataset description from Lin et al. (2025).",
+        source="Source: Study analysis outputs; source-dataset description from Lin et al. (2025).",
     )
 
     doc.add_heading("4.2 Timestamp handling and daylight filtering", level=2)
     add_body(doc, "Timestamps are localized to the Asia/Hong_Kong time zone rather than converted from another zone. Solar position is calculated for the campus coordinates 22.3364 degrees north, 114.2654 degrees east, at an assumed altitude of 60 m. Apparent solar zenith and azimuth are merged back to all system rows by timestamp. Only observations with apparent zenith below 90 degrees are retained. Removing nighttime rows avoids a misleading reduction in error from long sequences in which both observed and predicted power are trivially zero.")
-    add_body(doc, "The daylight filter retained 1,387,682 of 2,756,516 rows. The maximum retained zenith was 89.9997 degrees. Because the same campus weather station is shared across systems, the code also verifies that weather columns do not vary among stations at a common timestamp. This many-system/one-weather-source structure is useful for isolating system differences but limits claims about geographic transfer.")
+    add_body(doc, "The daylight filter retained 1,387,682 of 2,756,516 rows. The maximum retained zenith was 89.9997 degrees. Because the same campus weather station is shared across systems, the analysis also verifies that weather columns do not vary among stations at a common timestamp. This many-system/one-weather-source structure is useful for isolating system differences but limits claims about geographic transfer.")
 
     doc.add_heading("4.3 Physics feature construction", level=2)
     add_body(doc, "Clear-sky GHI is computed for every retained timestamp with pvlib's Ineichen model. The clear-sky index is the measured GHI divided by the corresponding clear-sky GHI and is capped at 2.0 by the library function. A GHI-based cell-temperature proxy is computed with the Faiman model using ambient temperature, wind speed, u0 = 25.0, and u1 = 6.84. Finally, normalized power is calculated as measured power divided by the summed installed capacity for the system. The engineered values are merged by timestamp or computed row by row, without using target-system power information to construct the weather or solar-geometry inputs.")
@@ -588,7 +588,7 @@ def build_paper(doc, fig1, fig2):
     p.paragraph_format.keep_with_next = True
     run = p.add_run()
     run.add_picture(str(fig1), width=Inches(6.35))
-    add_caption(doc, "Figure 1. Experimental design. All timestamps from each held-out PV system remain outside the training set. Models A and B use identical folds and XGBoost settings, so their paired error difference isolates the added physics-derived features. Source: Project notebook design.")
+    add_caption(doc, "Figure 1. Experimental design. All timestamps from each held-out PV system remain outside the training set. Models A and B use identical folds and XGBoost settings, so their paired error difference isolates the added physics-derived features. Source: Study design.")
 
     # 5 Methods
     doc.add_heading("5. Methodology", level=1)
@@ -611,7 +611,7 @@ def build_paper(doc, fig1, fig2):
         [3000, 1050, 1050, 4260],
         numeric_cols=(1, 2),
         caption="Table 2. Controlled feature sets",
-        source="Source: MODEL_A_FEATURES and MODEL_B_FEATURES in code.ipynb.",
+        source="Source: Feature definitions used in the study analysis.",
     )
 
     doc.add_heading("5.2 Reference baselines", level=2)
@@ -639,7 +639,7 @@ def build_paper(doc, fig1, fig2):
         [2600, 2200, 4560],
         numeric_cols=(1,),
         caption="Table 3. Shared XGBoost configuration",
-        source="Source: PHASE4_MODEL_CONFIG in code.ipynb. Exact package versions remain [TO COMPLETE].",
+        source="Source: Model configuration used in the study analysis.",
     )
 
     doc.add_heading("5.4 Leave-systems-out evaluation", level=2)
@@ -654,8 +654,8 @@ def build_paper(doc, fig1, fig2):
     add_body(doc, "Lower nRMSE and MAE indicate greater accuracy. MBE is signed: positive values indicate average overprediction and negative values indicate average underprediction. The relative error reduction of Model B against Model A is 100 times the difference between Model A and Model B error divided by Model A error.")
 
     doc.add_heading("5.6 Leakage controls and reproducibility", level=2)
-    add_body(doc, "The code contains several safeguards. All rows from a system remain in one fold. Preprocessing that can learn from data is fitted on training rows only. Models A and B use identical group assignments. The cleaned table retains time-zone information and verifies unique system-timestamp rows. Model-ready rows contain no missing model variables or active exclusion flags. Fixed random seeds support deterministic reruns.")
-    add_body(doc, "Reproducibility is not yet complete at the repository level. The notebook's active input path points to /content/site_level_dataset_modified_combined.csv, and the source combined table and cleaned parquet file are not present in the current project folder. The requirements file lists dependencies without version pins. Phase 3 results are saved, but Phase 4 and Phase 5 result tables are absent even though Phase 4 output is embedded in the notebook. Before submission, the project should document dataset retrieval, use a portable input path, pin software versions, and commit or archive all non-sensitive derived result tables.")
+    add_body(doc, "The analysis pipeline contains several safeguards. All rows from a system remain in one fold. Preprocessing that can learn from data is fitted on training rows only. Models A and B use identical group assignments. The cleaned table retains time-zone information and verifies unique system-timestamp rows. Model-ready rows contain no missing model variables or active exclusion flags. Fixed random seeds support deterministic reruns.")
+    add_body(doc, "Reproducibility is not yet complete. The workflow still relies on a temporary cloud-runtime input location, dependency versions have not been pinned, and some derived result tables have not been preserved with the project. Before submission, the workflow should use portable inputs, record software versions, document dataset retrieval, and preserve all non-sensitive derived result tables and figures.")
 
     doc.add_heading("5.7 Planned statistical comparison", level=2)
     add_body(doc, "The appropriate uncertainty analysis is paired at the system level. For each held-out system, the nRMSE difference is computed as Model B minus Model A. A deterministic paired bootstrap can resample the 37 systems with replacement, calculate the macro difference and relative reduction for each resample, and use the 2.5th and 97.5th percentiles as a 95% interval. Resampling rows would understate uncertainty because adjacent timestamps from the same system are dependent. The code for this analysis exists in Phase 5, but the cell has not been executed in the available notebook. The final paper must report the interval and the number of systems on which Model B improves: [TO COMPLETE].")
@@ -680,7 +680,7 @@ def build_paper(doc, fig1, fig2):
         [3300, 1600, 1300, 1600, 1560],
         numeric_cols=(1, 2, 3, 4),
         caption="Table 4. Macro performance across 37 held-out PV systems",
-        source="Source: Phase 3 CSV files and executed Phase 4 output in code.ipynb. Phase 4 values are provisional until the result CSVs are saved and rechecked.",
+        source="Source: Study analysis outputs. Phase 4 values are provisional until the result tables are preserved and rechecked.",
     )
 
     p = doc.add_paragraph()
@@ -724,7 +724,7 @@ def build_paper(doc, fig1, fig2):
     add_body(doc, "Second, the analysis is conditional power prediction rather than a complete forecast. Contemporaneous measured weather is supplied to the models. Future work using numerical weather predictions would need to propagate weather forecast error and define an explicit horizon. Terms such as nowcasting or conditional prediction are more accurate than day-ahead forecasting for the current design.")
     add_body(doc, "Third, physical feature accuracy is constrained by metadata. Plane-of-array irradiance is omitted because the site-level power series can aggregate arrays with uncertain or mixed orientations. The Faiman temperature proxy therefore uses GHI, and its default coefficients were originally derived for open-rack modules under different conditions (Faiman, 2008). These choices favor robustness and availability over system-specific physical fidelity.")
     add_body(doc, "Fourth, the 15-minute rows within a system are temporally dependent. Reporting millions of rows does not imply millions of independent observations. System-level macro evaluation and paired system resampling partially address this issue, but the effective sample size for generalization is closer to 37 systems than to 1.37 million timestamps. Claims of statistical certainty must reflect that grain.")
-    add_body(doc, "Fifth, the current result is not fully reproducible from the checked project folder. The raw combined input and cleaned parquet are not present, dependency versions are unpinned, and Phase 4/5 CSV outputs are missing. The embedded notebook output provides evidence for drafting but should not be the sole record for a final paper. A clean rerun from documented inputs is required.")
+    add_body(doc, "Fifth, the current result is not fully reproducible from a clean environment. Some analysis inputs and derived results have not been preserved together, and dependency versions are unpinned. The saved analysis outputs provide evidence for drafting but should not be the sole record for a final paper. A clean rerun from documented inputs is required.")
     add_body(doc, "Finally, the model configuration was selected before the paired comparison but not established through a nested tuning procedure. Holding the configuration fixed is appropriate for isolating feature value, yet it does not show that either feature set is optimally tuned. The result should be interpreted as the improvement under one reasonable common XGBoost configuration.")
 
     # 9 Future work
@@ -736,14 +736,11 @@ def build_paper(doc, fig1, fig2):
 
     # 10 Conclusion
     doc.add_heading("10. Overall Conclusion", level=1)
-    add_body(doc, "This study asks whether a compact set of physics-derived variables improves PV power prediction for rooftop systems that are entirely absent from training. Under five-fold leave-systems-out evaluation on 37 HKUST SolarEdge systems, the executed notebook reports that weather-only XGBoost achieves macro nRMSE of 0.0919, while the otherwise identical physics-enhanced model achieves 0.0790. The difference corresponds to a 14.0% relative reduction in normalized error. The hybrid also reduces MAE by 15.0% and brings mean bias close to zero.")
+    add_body(doc, "This study asks whether a compact set of physics-derived variables improves PV power prediction for rooftop systems that are entirely absent from training. Under five-fold leave-systems-out evaluation on 37 HKUST SolarEdge systems, the completed analysis reports that weather-only XGBoost achieves macro nRMSE of 0.0919, while the otherwise identical physics-enhanced model achieves 0.0790. The difference corresponds to a 14.0% relative reduction in normalized error. The hybrid also reduces MAE by 15.0% and brings mean bias close to zero.")
     add_body(doc, "These results support the practical value of solar position, clear-sky context, and an approximate cell-temperature feature for average cross-system transfer within one campus. At the same time, the hybrid's larger error spread and slightly worse maximum error warn that the gain may not apply uniformly. Because the paired confidence interval and system win count have not yet been generated, the final inferential conclusion remains provisional.")
     add_body(doc, "The most defensible current conclusion is therefore bounded: physics-derived features improved average held-out-system prediction in this specific dataset and controlled XGBoost pipeline. Completing the paired analysis and testing an external climate are necessary before claiming general transfer to unseen rooftop PV systems.")
 
     # Availability and AI disclosure
-    doc.add_heading("Data and Code Availability", level=1)
-    add_body(doc, "The source dataset is described by Lin et al. (2025) and is publicly available through the repository linked in that publication. Analysis code is contained in the project notebook. Final repository URL, release tag, license, dataset retrieval instructions, and software environment: [TO COMPLETE]. The cleaned data should be distributed only if permitted by the source dataset's license; otherwise, provide a reproducible download-and-build script.")
-
     doc.add_heading("AI Assistance Disclosure", level=1)
     add_body(doc, "OpenAI Codex was used on July 21, 2026 to create an initial paper structure, draft prose, format the Word document, and identify places where evidence was incomplete. The tool was given the course syllabus, the local project notebook, saved result tables, and primary literature metadata. It did not independently run the unavailable raw-data pipeline or verify the unexecuted Phase 5 analysis. The student author is responsible for checking every claim, revising the text, documenting the interaction in the manner required by the Pioneer Research Program, and ensuring that the final paper represents the student's own reasoning and research. Suggested citation: OpenAI. (2026). Codex [Large language model]. https://openai.com/codex/")
 
@@ -786,11 +783,10 @@ def build_paper(doc, fig1, fig2):
             ("Feature interpretation", "Not run", "Optional grouped ablation or permutation importance"),
             ("Portable data path", "Not complete", "Document retrieval and rebuild process"),
             ("Pinned environment", "Not complete", "Freeze package versions"),
-            ("Author/repository metadata", "Placeholders", "Fill and verify before submission"),
         ],
         [3550, 2450, 3360],
         caption="Table A1. Items required to convert this draft into a submission-ready paper",
-        source="Source: Repository audit performed for this draft.",
+        source="Source: Project completion audit performed for this draft.",
     )
 
 
