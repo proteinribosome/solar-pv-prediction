@@ -8,3 +8,9 @@ Physics-derived features were most useful in this study as a compact representat
 
 ## Final Version Code
 [Link to notebook](https://github.com/proteinribosome/solar-pv-prediction/blob/main/v4%20model%20d/code_model_d.ipynb)
+
+## License
+
+The original source code and Jupyter notebooks in this repository are
+available under the [MIT License](LICENSE). Third-party datasets are not
+covered by this license and remain subject to their respective source terms.
